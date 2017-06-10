@@ -68,7 +68,8 @@ if __name__ == "__main__":
     # Notice: The following parsing code is just for one kind of txt file format.
     # Modify it according to your own txt file format.
     with open(src_txt) as file:
-       while True:
+        num_items = 0
+        while True:
             line = file.next().rstrip()
             # Set EOF manually. There should be a better implementation.
             if line == 'EOF':
@@ -110,4 +111,6 @@ if __name__ == "__main__":
                         os.makedirs(path)
                     output_filename = os.path.join(path, os.path.splitext(item['filename'])[0] + '.xml')
                     write_xml(item, ind_to_class, output_filename)
-                    print 'Processed {}'.format(item['filename'])
+                    num_items += 1
+                    if num_items % 1000 == 0:
+                        print 'Processed {}'.format(num_items)
