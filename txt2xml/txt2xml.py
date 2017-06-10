@@ -98,10 +98,10 @@ if __name__ == "__main__":
                         bndbox = {}
                         bndbox_meta = file.next().split()
                         bndbox['class_index'] = int(bndbox_meta[0])
-                        bndbox['xmin'] = int(float(bndbox_meta[1]))
-                        bndbox['ymin'] = int(float(bndbox_meta[2]))
-                        bndbox['xmax'] = int(float(bndbox_meta[3]))
-                        bndbox['ymax'] = int(float(bndbox_meta[4]))
+                        bndbox['xmin'] = min(max(int(float(bndbox_meta[1])), 1), item['width'])
+                        bndbox['ymin'] = min(max(int(float(bndbox_meta[2])), 1), item['height'])
+                        bndbox['xmax'] = min(max(int(float(bndbox_meta[3])), 1), item['width'])
+                        bndbox['ymax'] = min(max(int(float(bndbox_meta[4])), 1), item['height'])
                         objects.append(bndbox)
                     assert num_windows == len(objects), 'num_windows should be equal to len(objects)'
                     item['objects'] = objects
