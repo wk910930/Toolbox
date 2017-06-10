@@ -102,3 +102,7 @@ used in [Caffe](https://github.com/BVLC/caffe).
 1
 7 155 96 350 269
 ```
+
+### Acknowledgements
+
+Learnd from [Creating a simple XML file using python](https://stackoverflow.com/a/3605831) and [Pretty print XML trees in python](https://norwied.wordpress.com/2013/08/27/307/).
