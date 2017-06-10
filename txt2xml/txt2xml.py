@@ -44,7 +44,7 @@ def write_xml(item, ind_to_class, output_filename=None):
     for i in xrange(len(objects)):
         cur_object = ET.SubElement(annotation, "object")
         ET.SubElement(cur_object, "name").text = ind_to_class[objects[i]['class_index']]
-        ET.SubElement(cur_object, "difficult").text = str(1)
+        ET.SubElement(cur_object, "difficult").text = str(0)
 
         bndbox = ET.SubElement(cur_object, "bndbox")
         ET.SubElement(bndbox, "xmin").text = str(objects[i]['xmin'])
