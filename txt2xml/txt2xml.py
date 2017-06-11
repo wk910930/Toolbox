@@ -113,4 +113,4 @@ if __name__ == "__main__":
                     write_xml(item, ind_to_class, output_filename)
                     num_items += 1
                     if num_items % 1000 == 0:
-                        print 'Processed {}'.format(num_items)
+                        print 'Processed {} files.'.format(num_items)
