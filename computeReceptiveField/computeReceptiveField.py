@@ -50,22 +50,35 @@ def printLayer(layer, layer_name):
 
 def create_nn(name):
     """Create pre-defined networks"""
+    # convnet[i] = [filter_size, stride, padding]
     if name == 'AlexNet':
         convnet = [[11, 4, 0], [3, 2, 0], [5, 1, 2], [3, 2, 0], [3, 1, 1], [3, 1, 1], [3, 1, 1],
                    [3, 2, 0], [6, 1, 0], [1, 1, 0]]
         layer_names = ['conv1', 'pool1', 'conv2', 'pool2', 'conv3', 'conv4', 'conv5',
                        'pool5', 'fc6-conv', 'fc7-conv']
+        im_size = 227
+    elif name == 'VGGNet':
+        convnet = [[3, 1, 1], [3, 1, 1], [2, 2, 0], [3, 1, 1], [3, 1, 1], [2, 2, 0],
+                   [3, 1, 1], [3, 1, 1], [3, 1, 1], [2, 2, 0],
+                   [3, 1, 1], [3, 1, 1], [3, 1, 1], [2, 2, 0],
+                   [3, 1, 1], [3, 1, 1], [3, 1, 1], [2, 2, 0],
+                   [7, 1, 0], [1, 1, 0]]
+        layer_names = ['conv1_1', 'conv1_2', 'pool1', 'conv2_1', 'conv2_2', 'pool2',
+                       'conv3_1', 'conv3_2', 'conv3_3', 'pool3',
+                       'conv4_1', 'conv4_2', 'conv4_3', 'pool4',
+                       'conv5_1', 'conv5_2', 'conv5_3', 'pool5',
+                       'fc6-conv', 'fc7-conv']
+        im_size = 224
     else:
         print '[WARNING] {}: Unknown network!'.format(name)
         convnet = []
         layer_names = []
 
-    return convnet, layer_names
+    return convnet, layer_names, im_size
 
 if __name__ == '__main__':
     name = 'AlexNet'
-    im_size = 227
-    convnet, layer_names = create_nn(name)
+    convnet, layer_names, im_size = create_nn(name)
     layerInfos = []
     # The first layer is the data (input image) layer with
     # - n_0 = im_size
