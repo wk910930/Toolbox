@@ -6,51 +6,63 @@ in a given CNN architecture.
 
 Author: Dang Ha The Hien
 """
-# [filter size, stride, padding]
+# [kernel_size, stride, padding]
 #Assume the two dimensions are the same
 #Each kernel requires the following parameters:
-# - k_i: kernel size
-# - s_i: stride
-# - p_i: padding (if padding is uneven, right padding will higher than left padding)
+# - kernel_size
+# - stride
+# - padding (if padding is uneven, right padding will higher than left padding)
 #
 #Each layer i requires the following parameters to be fully represented:
-# - n_i: number of feature (data layer has n_1 = imagesize )
-# - j_i: distance (projected to image pixel distance) between center of two adjacent features
+# - n_i: number of feature (data layer has n_0 = im_size)
+# - step_i: distance (projected to image pixel distance) between center of two adjacent features
 # - r_i: receptive field of a feature in layer i
 # - start_i: position of the first feature's receptive field in layer i (idx start from 0,
 #       negative means the center fall into padding)
 
 import math
 
-def outFromIn(conv, layerIn):
-    """Receptive Field Arithmetic"""
-    n_in = layerIn[0]
-    j_in = layerIn[1]
-    r_in = layerIn[2]
-    start_in = layerIn[3]
-    k = conv[0]
-    s = conv[1]
-    p = conv[2]
+def outFromIn(conv, input_layer):
+    """Receptive Field Arithmetic
+    Args:
+           conv (list): [kernel_size, stride, padding]
+           input_layer (list): [num, step, receptive_field, start_idx]
+    Returns:
+           num_out, step_out, receptive_field_out, start_out
+    """
 
-    n_out = math.floor((n_in - k + 2 * p) / s) + 1
-    actualP = (n_out - 1) * s - n_in + k
+    # Extract layer information
+    num_in = input_layer[0]
+    step_in = input_layer[1]
+    receptive_field_in = input_layer[2]
+    start_in = input_layer[3]
+    # Extract kernel (filter) information
+    kernel_size = conv[0]
+    stride = conv[1]
+    padding = conv[2]
+    assert kernel_size > 0
+    assert stride > 0
+
+    num_out = math.floor((num_in - kernel_size + 2 * padding) / stride) + 1
+    actualP = (num_out - 1) * stride - num_in + kernel_size
     pR = math.ceil(actualP / 2)
     pL = math.floor(actualP / 2)
 
-    j_out = j_in * s
-    r_out = r_in + (k - 1) * j_in
-    start_out = start_in + ((k - 1) / 2 - pL) * j_in
-    return n_out, j_out, r_out, start_out
+    step_out = step_in * stride
+    receptive_field_out = receptive_field_in + (kernel_size - 1) * step_in
+    start_out = start_in + ((kernel_size - 1) / 2 - pL) * step_in
+
+    return num_out, step_out, receptive_field_out, start_out
 
 def printLayer(layer, layer_name):
     """A helper function to print layer information"""
     print layer_name + ':'
-    print '\t n features: %s \n \t jump: %s \n \t receptive size: %s \t start: %s ' % (
+    print '\t n features: %s \n \t step: %s \n \t receptive size: %s \t start: %s ' % (
         layer[0], layer[1], layer[2], layer[3])
 
 def create_nn(name):
     """Create pre-defined networks"""
-    # convnet[i] = [filter_size, stride, padding]
+    # convnet[i] = [kernel_size, stride, padding]
     if name == 'AlexNet':
         convnet = [[11, 4, 0], [3, 2, 0], [5, 1, 2], [3, 2, 0], [3, 1, 1], [3, 1, 1], [3, 1, 1],
                    [3, 2, 0], [6, 1, 0], [1, 1, 0]]
@@ -80,14 +92,16 @@ if __name__ == '__main__':
     name = 'AlexNet'
     convnet, layer_names, im_size = create_nn(name)
     layerInfos = []
-    # The first layer is the data (input image) layer with
-    # - n_0 = im_size
-    # - j_0 = 1
-    # - r_0 = 1
-    # - start_0 = 0.5
+
     print '------- {} Summary ------'.format(name)
+    # The first layer is the data (input image) layer with
+    # - num_0 = im_size
+    # - step_0 = 1
+    # - receptive_field_0 = 1
+    # - start_0 = 0.5
     current_layer = [im_size, 1, 1, 0.5]
     printLayer(current_layer, "input image")
+
     for i in xrange(len(convnet)):
         current_layer = outFromIn(convnet[i], current_layer)
         layerInfos.append(current_layer)
