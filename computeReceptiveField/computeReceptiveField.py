@@ -40,6 +40,9 @@ def outFromIn(conv, input_layer):
     kernel_size = conv[0]
     stride = conv[1]
     padding = conv[2]
+    if len(conv) == 4:
+        dilation = conv[3]
+        kernel_size = dilation * (kernel_size - 1) + 1
     assert kernel_size > 0
     assert stride > 0
 
