@@ -60,8 +60,8 @@ def outFromIn(conv, input_layer):
 def printLayer(layer, layer_name):
     """A helper function to print layer information"""
     print layer_name + ':'
-    print '\t n features: %s \n \t step: %s \n \t receptive size: %s \t start: %s ' % (
-        layer[0], layer[1], layer[2], layer[3])
+    print '\t n features: {} \n \t step: {} \n \t receptive size: {} \t start: {} '.format(
+        int(layer[0]), layer[1], layer[2], layer[3])
 
 def create_nn(name):
     """Create pre-defined networks"""
@@ -135,5 +135,5 @@ if __name__ == '__main__':
     assert idx_x < n
     assert idx_y < n
 
-    print 'receptive field: (%s, %s)' % (r, r)
-    print 'center: (%s, %s)' % (start + idx_x * j, start + idx_y * j)
+    print 'receptive field: ({}, {})'.format(r, r)
+    print 'center: ({}, {})'.format(start + idx_x * j, start + idx_y * j)
