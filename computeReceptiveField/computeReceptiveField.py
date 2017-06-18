@@ -69,6 +69,16 @@ def create_nn(name):
         layer_names = ['conv1', 'pool1', 'conv2', 'pool2', 'conv3', 'conv4', 'conv5',
                        'pool5', 'fc6-conv', 'fc7-conv']
         im_size = 227
+    elif name == 'NINNet':
+        convnet = [[11, 4, 0], [1, 1, 0], [1, 1, 0], [3, 2, 0],
+                   [5, 1, 2], [1, 1, 0], [1, 1, 0], [3, 2, 0],
+                   [3, 1, 1], [1, 1, 0], [1, 1, 0], [3, 2, 0],
+                   [3, 1, 1], [1, 1, 0], [1, 1, 0], [5, 1, 0]]
+        layer_names = ['conv1', 'cccp1', 'cccp2', 'pool0',
+                       'conv2', 'cccp3', 'cccp4', 'pool2',
+                       'conv3', 'cccp5', 'cccp6', 'pool3',
+                       'conv4-1024', 'cccp7-1024', 'cccp8-1024', 'pool4']
+        im_size = 224
     elif name == 'VGGNet':
         convnet = [[3, 1, 1], [3, 1, 1], [2, 2, 0], [3, 1, 1], [3, 1, 1], [2, 2, 0],
                    [3, 1, 1], [3, 1, 1], [3, 1, 1], [2, 2, 0],
