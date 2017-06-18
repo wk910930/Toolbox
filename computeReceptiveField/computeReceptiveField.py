@@ -4,8 +4,9 @@
 A small python program that calculates the receptive field information for all layers
 in a given CNN architecture.
 
-Author: Dang Ha The Hien
+Author: Dang Ha The Hien, Kun Wang
 """
+
 # [kernel_size, stride, padding]
 #Assume the two dimensions are the same
 #Each kernel requires the following parameters:
