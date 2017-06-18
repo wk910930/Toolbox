@@ -83,12 +83,14 @@ def create_nn(name):
                        'conv4-1024', 'cccp7-1024', 'cccp8-1024', 'pool4']
         im_size = 224
     elif name == 'VGGNet':
-        convnet = [[3, 1, 1], [3, 1, 1], [2, 2, 0], [3, 1, 1], [3, 1, 1], [2, 2, 0],
+        convnet = [[3, 1, 1], [3, 1, 1], [2, 2, 0],
+                   [3, 1, 1], [3, 1, 1], [2, 2, 0],
                    [3, 1, 1], [3, 1, 1], [3, 1, 1], [2, 2, 0],
                    [3, 1, 1], [3, 1, 1], [3, 1, 1], [2, 2, 0],
                    [3, 1, 1], [3, 1, 1], [3, 1, 1], [2, 2, 0],
                    [7, 1, 0], [1, 1, 0]]
-        layer_names = ['conv1_1', 'conv1_2', 'pool1', 'conv2_1', 'conv2_2', 'pool2',
+        layer_names = ['conv1_1', 'conv1_2', 'pool1',
+                       'conv2_1', 'conv2_2', 'pool2',
                        'conv3_1', 'conv3_2', 'conv3_3', 'pool3',
                        'conv4_1', 'conv4_2', 'conv4_3', 'pool4',
                        'conv5_1', 'conv5_2', 'conv5_3', 'pool5',
@@ -102,7 +104,7 @@ def create_nn(name):
     return convnet, layer_names, im_size
 
 if __name__ == '__main__':
-    name = 'AlexNet'
+    name = 'VGGNet'
     convnet, layer_names, im_size = create_nn(name)
     layerInfos = []
 
