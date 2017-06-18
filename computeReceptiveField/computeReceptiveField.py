@@ -61,8 +61,8 @@ def outFromIn(conv, input_layer):
 def printLayer(layer, layer_name):
     """A helper function to print layer information"""
     print layer_name + ':'
-    print '\t n features: {} \n \t step: {} \n \t receptive size: {} \t start: {} '.format(
-        int(layer[0]), layer[1], layer[2], layer[3])
+    print '\t spatial size: [{}x{}] \n \t step: {} \n \t receptive size: {} \n \t start: {} '.format(
+        int(layer[0]), int(layer[0]), layer[1], layer[2], layer[3])
 
 def create_nn(name):
     """Create pre-defined networks"""
