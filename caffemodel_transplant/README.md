@@ -1,0 +1,2 @@
+- [x] read caffemodel and save it with clean prototxt
+- [ ] test
