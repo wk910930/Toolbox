@@ -78,14 +78,16 @@ if __name__ == "__main__":
                 # Find a new annotation
                 if '#' in line:
                     # filename: sub-folder/filename.jpg
-                    filename = file.next().split('/')
+                    filename = file.next()
+                    basename = os.path.basename(filename)
+                    dirname = os.path.dirname(filename);
                     # meta_data: [channel, height, width]
                     meta_data = file.next().split()
                     num_windows = int(file.next())
                     # Create dict
                     item = {}
-                    item['folder'] = filename[0]
-                    item['filename'] = filename[1].rstrip()
+                    item['folder'] = dirname
+                    item['filename'] = basename
                     item['database'] = 'AutoPilot_SenseTime_HongKong'
                     item['depth'] = int(meta_data[0])
                     item['height'] = int(meta_data[1])
