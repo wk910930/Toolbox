@@ -80,33 +80,41 @@ if __name__ == '__main__':
     with open(args.model) as f:
         model = caffe_pb2.NetParameter()
         pb.text_format.Parse(f.read(), model)
+        weights = caffe.Net(args.model, args.weights, caffe.TEST)
 
         output_model = caffe_pb2.NetParameter()
         output_model.CopyFrom(model)
 
-        weights = caffe.Net(args.model, args.weights, caffe.TEST)
-        output_weights = caffe.Net(args.model, args.weights, caffe.TEST)
-
         for i, layer in enumerate(model.layer):
-            ori_name = layer.name
-            if ori_name in name_dict.keys():
-                new_name = name_dict[ori_name]
-                print '{} ===> {}'.format(ori_name, new_name)
+            old_name = layer.name
+            if old_name in name_dict.keys():
+                new_name = name_dict[old_name]
+                print '{} ===> {}'.format(old_name, new_name)
+                # Update prototxt
                 output_model.layer[i].name = new_name
-                output_weights.params[ori_name] = new_name
             else:
-                print ori_name
+                print old_name
 
-    # Check if the conversion is correct
-    check(weights, output_weights)
+        # Write prototxt
+        with open(args.output_model, 'w') as f:
+            f.write(pb.text_format.MessageToString(output_model))
+            print 'Wrote to {}'.format(args.output_model)
 
-    # Write prototxt
-    with open(args.output_model, 'w') as f:
-        f.write(pb.text_format.MessageToString(output_model))
-        print 'Wrote to {}'.format(args.output_model)
+        # Initialize output_weights with new model
+        output_weights = caffe.Net(args.output_model, caffe.TEST)
+        for old_name in weights.params.keys():
+            if old_name in name_dict:
+                new_name = name_dict[old_name]
+            else:
+                new_name = old_name
+            for i in xrange(len(weights.params[old_name])):
+                output_weights.params[new_name][i].data[...] = weights.params[old_name][i].data.copy()
 
-    # Save caffemodel
-    output_weights.save(args.output_weights)
-    print 'Wrote to {}'.format(args.output_weights)
+        # Check if the conversion is correct
+        check(weights, output_weights)
+
+        # Save caffemodel
+        output_weights.save(args.output_weights)
+        print 'Wrote to {}'.format(args.output_weights)
 
     print 'Done.'
